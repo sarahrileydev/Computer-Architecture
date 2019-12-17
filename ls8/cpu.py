@@ -84,13 +84,16 @@ class CPU:
         """Run the CPU."""
 
         while True:
-            ir = self.ram[self.pc]
-            op_A = self.ram_read(self.pc + 1)
-            op_B = self.ram_read(self.pc + 2)
+                ir = self.ram[self.pc]
+                op_A = self.ram_read(self.pc + 1)
+                op_B = self.ram_read(self.pc + 2)
 
-            if ir == LDI:
-                pass
-            elif ir == PRN:
-                pass
-            elif ir == HLT:
-                pass
+                if ir == LDI:
+                    self.reg[op_A] = op_B
+                    self.pc += 3
+                elif ir == PRN:
+                    print(self.reg[op_A])
+                    self.pc += 2
+                elif ir == HLT:
+                    break
+                    sys.exit(1)
