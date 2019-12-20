@@ -6,6 +6,9 @@ PRN = 0b01000111
 LDI = 0b10000010
 HLT = 0b00000001
 MUL = 0b10100010
+SP = 7
+PUSH = 0b01000101
+POP = 0b01000110
 
 
 class CPU:
@@ -78,6 +81,14 @@ class CPU:
             self.reg[reg_a] += self.reg[reg_b]
         elif op == "MUL":
             self.reg[reg_a] *= self.reg[reg_b]
+        elif op == "PUSH":
+            self.reg[SP] -= 1
+            value = self.reg[reg_a]
+            self.ram[self.reg[SP]] = value
+        elif op == "POP":
+            value = self.ram[self.reg[SP]]
+            self.reg[reg_a] = value
+            self.reg[SP] += 1
         # elif op == "SUB": etc
         else:
             raise Exception("Unsupported ALU operation")
@@ -122,3 +133,9 @@ class CPU:
             elif ir == MUL:
                 self.alu("MUL", op_A, op_B)
                 self.pc += 3
+            elif ir == PUSH:
+                self.alu('PUSH', op_A, op_B)
+                self.pc += 2
+            elif ir == POP:
+                self.alu('POP', op_A, op_B)
+                self.pc += 2
